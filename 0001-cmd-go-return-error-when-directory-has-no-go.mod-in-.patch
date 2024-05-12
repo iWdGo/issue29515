@@ -1,0 +1,29 @@
+From 913f66617c24d0aad3fe43e19872b549e4318b98 Mon Sep 17 00:00:00 2001
+From: Constantin Konstantinidis <constantinkonstantinidis@gmail.com>
+Date: Sun, 12 May 2024 08:52:35 +0200
+Subject: [PATCH] cmd/go: return error when directory has no go.mod in module
+ mode
+
+---
+ src/cmd/go/internal/modload/list.go | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/cmd/go/internal/modload/list.go b/src/cmd/go/internal/modload/list.go
+index ef93c25121..422da933c8 100644
+--- a/src/cmd/go/internal/modload/list.go
++++ b/src/cmd/go/internal/modload/list.go
+@@ -131,7 +131,10 @@ func listModules(ctx context.Context, rs *Requirements, args []string, mode List
+ 			}
+ 			ms = append(ms, moduleInfo(ctx, rs, m, mode, reuse))
+ 		}
+-		return rs, ms, nil
++		if !HasModRoot() {
++			mgErr = ErrNoModRoot
++		}
++		return rs, ms, mgErr
+ 	}
+ 
+ 	needFullGraph := false
+-- 
+2.43.0
+
