@@ -1,14 +1,15 @@
-From 3c00c36addf672c3c242c43a45e4fa87c4613306 Mon Sep 17 00:00:00 2001
+From e2808aacd7328928f8b462153eca796e1dde6b14 Mon Sep 17 00:00:00 2001
 From: Constantin Konstantinidis <constantinkonstantinidis@gmail.com>
 Date: Sun, 12 May 2024 08:52:35 +0200
 Subject: [PATCH] cmd/go: return error when directory has no go.mod in module
  mode
 
+Change-Id: I58f3eb44e6debf1f0709fb746fd6cf6a21e98699
 ---
  src/cmd/go/internal/modload/list.go        | 5 ++++-
- src/cmd/go/testdata/script/mod_enabled.txt | 2 +-
- src/cmd/go/testdata/script/mod_outside.txt | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ src/cmd/go/testdata/script/mod_enabled.txt | 4 ++--
+ src/cmd/go/testdata/script/mod_outside.txt | 4 ++--
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/src/cmd/go/internal/modload/list.go b/src/cmd/go/internal/modload/list.go
 index ef93c25121..422da933c8 100644
@@ -27,27 +28,31 @@ index ef93c25121..422da933c8 100644
  
  	needFullGraph := false
 diff --git a/src/cmd/go/testdata/script/mod_enabled.txt b/src/cmd/go/testdata/script/mod_enabled.txt
-index 39f1ece8cb..31e98375ce 100644
+index 39f1ece8cb..18b4411ee5 100644
 --- a/src/cmd/go/testdata/script/mod_enabled.txt
 +++ b/src/cmd/go/testdata/script/mod_enabled.txt
-@@ -51,7 +51,7 @@ cd $GOPATH/src/x/y
+@@ -50,8 +50,8 @@ stdout z[/\\]go.mod
+ cd $GOPATH/src/x/y
  go env GOMOD
  stdout 'NUL|/dev/null'
- go list -m
+-go list -m
 -stdout '^command-line-arguments$'
++! go list -m
 +stderr '^go: go.mod file not found in current directory or any parent directory; see ''go help modules''$'
  
  cd $GOPATH/foo
  go env GOMOD
 diff --git a/src/cmd/go/testdata/script/mod_outside.txt b/src/cmd/go/testdata/script/mod_outside.txt
-index 7a0dc9f22f..098d88545c 100644
+index 7a0dc9f22f..ef76cedd1d 100644
 --- a/src/cmd/go/testdata/script/mod_outside.txt
 +++ b/src/cmd/go/testdata/script/mod_outside.txt
-@@ -14,7 +14,7 @@ stdout 'NUL|/dev/null'
+@@ -13,8 +13,8 @@ stdout 'NUL|/dev/null'
+ # which is not in a module.
  ! go list
  stderr '^go: go.mod file not found in current directory or any parent directory; see ''go help modules''$'
- go list -m
+-go list -m
 -stdout '^command-line-arguments$'
++! go list -m
 +stderr '^go: go.mod file not found in current directory or any parent directory; see ''go help modules''$'
  # 'go list' in the working directory should fail even if there is a a 'package
  # main' present: without a main module, we do not know its package path.
