@@ -2,9 +2,9 @@ name: macos
 on:
   push:
     branches:
-      - 'issue62047'
+      - ${{ github.head_ref || github.ref_name }}
     paths:
-      - '0001-cmd-remove-support-for-GOROOT_FINAL.patch'
+      - '0001-cmd-go-return-error-when-directory-has-no-go.mod-in-.patch'
       - '.github/workflows/macos.yml'
 jobs:
 
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: 1.20.x
+        go-version: 1.22.x
       id: go
 
     - name: Get patch files
