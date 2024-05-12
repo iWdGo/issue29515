@@ -2,7 +2,7 @@ name: macos
 on:
   push:
     branches:
-      - ${{ github.head_ref || github.ref_name }}
+      - 'issue30136'
     paths:
       - '0001-cmd-go-return-error-when-directory-has-no-go.mod-in-.patch'
       - '.github/workflows/macos.yml'
