@@ -20,7 +20,7 @@ jobs:
       id: go
 
     - name: Get patch files
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Build go from tip
       uses: iwdgo/gotip-build@master
