@@ -27,7 +27,7 @@ jobs:
     - name: Toolstash save
       run: |
         go env -w GO111MODULE=auto
-        go get -u golang.org/x/tools/...
+        go install golang.org/x/tools/toolstash
         toolstash -v save
 
     - name: Merge patch
