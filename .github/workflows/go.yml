@@ -20,9 +20,8 @@ jobs:
       run: |
         git clone https://github.com/golang/go.git --branch master --single-branch --no-tags
         cd go
-        pwd
-        echo "::set-env name=GOCLONE::$(pwd)"
-        echo $GOCLONE
+        export baseline=$(pwd)
+        echo "baseline=$baseline" >> $GITHUB_ENV
         git log -1 --pretty=short
 
     - name: Toolstash save
@@ -33,9 +32,14 @@ jobs:
 
     - name: Merge patch
       run: |
-        mv *.patch go/
-        cd go/
-        git apply -v --ignore-space-change --ignore-whitespace --whitespace=fix *.patch
+        if [ ! -f *.patch ]; then echo "No patch file found. Skipping."; exit 0; fi
+        mv *.patch ./go/src/
+        cd go/src
+        git config user.email "${{ github.event.pusher.email }}"
+        git config user.name "${{ github.event.pusher.name }}"
+        git am --ignore-space-change --ignore-whitespace --whitespace=fix *.patch
+        git show --stat -n $(ls -1 *.patch | wc -l)
+        rm ./*.patch
 
     - name: Update compiler rules
       run: |
@@ -63,7 +67,6 @@ jobs:
         cd go/bin
         export GOROOT=
         go env -w GOROOT=
-        # echo "::set-env name=GOROOT::"
         go tool dist version
         go tool dist test
 
@@ -81,10 +84,10 @@ jobs:
       run: |
         go get -u github.com/iwdgo/toolstash-check
         cd $GOPATH
-        toolstash-check -v -repo $GOCLONE
+        toolstash-check -v -repo $baseline
 
     - name: Toolstash-check -all
       run: |
         go get -u github.com/iwdgo/toolstash-check
         cd $GOPATH
-        toolstash-check -all -v -repo $GOCLONE
+        toolstash-check -all -v -repo $baseline
