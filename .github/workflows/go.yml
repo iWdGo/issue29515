@@ -1,4 +1,4 @@
-name: go-compiler
+name: toolstash-check
 on: [push]
 jobs:
 
