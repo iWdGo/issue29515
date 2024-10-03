@@ -32,7 +32,9 @@ jobs:
 
     - name: Merge patch
       run: |
+        git fetch https://go.googlesource.com/go refs/changes/96/136896/2 && git checkout -b change-136896 FETCH_HEAD
         if [ ! -f *.patch ]; then echo "No patch file found. Skipping."; exit 0; fi
+        pwd
         mv *.patch ./go/src/
         cd go/src
         git config user.email "${{ github.event.pusher.email }}"
@@ -46,20 +48,19 @@ jobs:
         cd go/src/cmd/compile/internal/ssa/gen
         go run *.go
 
-    - name: Commit changes
+    - name: Commit changes of compiler
       run: |
         cd go
         export COMMITTITLE=$(basename -s .patch *.patch)
         rm *.patch
         git add -A
-        whoami | xargs -I {} git config user.name {}
-        whoami | xargs -I {} git config user.email {}@github.com
+        # whoami | xargs -I {} git config user.name {}
+        # whoami | xargs -I {} git config user.email {}@github.com
         git commit -m ${COMMITTITLE}
 
     - name: Build
       run: |
         cd go/src
-        export GOROOT_BOOTSTRAP=$(go env GOROOT)
         sh ./make.bash
 
     - name: Test
