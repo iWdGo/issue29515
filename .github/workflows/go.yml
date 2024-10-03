@@ -46,7 +46,8 @@ jobs:
     - name: Update compiler rules
       run: |
         cd go/src/cmd/compile/internal/ssa
-        GOTOOLCHAIN=local & go generate
+        go env -w GOTOOLCHAIN=local
+        go generate
 
     - name: Commit changes of compiler
       run: |
