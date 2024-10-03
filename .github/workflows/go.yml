@@ -45,8 +45,8 @@ jobs:
 
     - name: Update compiler rules
       run: |
-        cd go/src/cmd/compile/internal/ssa/gen
-        go run *.go
+        cd go/src/cmd/compile/internal/ssa
+        go generate
 
     - name: Commit changes of compiler
       run: |
