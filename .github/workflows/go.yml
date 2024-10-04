@@ -59,7 +59,7 @@ jobs:
       run: |
         cd ./go/src
         pwd
-        ../bin/go generate ./src/cmd/compile/internal/ssa
+        ../bin/go generate ./cmd/compile/internal/ssa
 
     - name: Commit changes to compiler
       run: |
