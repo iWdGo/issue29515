@@ -26,17 +26,19 @@ jobs:
       id: gotip
       with:
         test_build: false
-# TODO Add architecture
 
     - name: Baseline from tip
       run: |
         cd go
+        pwd
+        ls -l ./bin
         export baseline=$(pwd)
         echo "baseline=$baseline" >> $GITHUB_ENV
 
     - name: Toolstash save
       run: |
-        cd $baseline
+        echo ${{env.baseline}}
+        cd ${{env.baseline}}
         toolstash -v save
 
     - name: Merge patch
@@ -55,7 +57,8 @@ jobs:
 
     - name: Update compiler rules
       run: |
-        cd src
+        cd ./go/src
+        pwd
         ../bin/go generate ./src/cmd/compile/internal/ssa
 
     - name: Commit changes to compiler
