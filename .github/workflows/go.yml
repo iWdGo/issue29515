@@ -36,7 +36,7 @@ jobs:
 
     - name: Toolstash save
       run: |
-        # TODO Save the actual baseline
+        cd $baseline
         toolstash -v save
 
     - name: Merge patch
