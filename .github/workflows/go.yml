@@ -64,20 +64,19 @@ jobs:
     - name: Commit changes to compiler
       run: |
         cd go
-        export COMMITTITLE=$(basename -s .patch *.patch)
-        rm *.patch
+        export committitle="`git log -1 --pretty=format:%s` - rules update"
         git add -A
         # whoami | xargs -I {} git config user.name {}
         # whoami | xargs -I {} git config user.email {}@github.com
-        git commit -m ${COMMITTITLE}
+        git commit -m $committitle
 
-    - name: Build
+    - name: Build with updated rules
       run: |
         cd go/src
         sh ./make.bash
 
     - name: Test
-      # Native testing
+      # Native testing of update
       run: |
         cd go/bin
         export GOROOT=
@@ -93,15 +92,17 @@ jobs:
         go env -w GO111MODULE=auto
         go tool dist version
         # go tool dist install cmd/compile
-        # go build -toolexec 'toolstash -cmp' -a std
+        go build -toolexec 'toolstash -cmp' -a std cmd
 
     - name: Toolstash-check
+      if: false
       run: |
         go get -u github.com/iwdgo/toolstash-check
         cd $GOPATH
         toolstash-check -v -repo $baseline
 
     - name: Toolstash-check -all
+      if: false
       run: |
         go get -u github.com/iwdgo/toolstash-check
         cd $GOPATH
