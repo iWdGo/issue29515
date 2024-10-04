@@ -16,23 +16,33 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v4
 
-    - name: Clone go on tip
-      run: |
-        git clone https://github.com/golang/go.git --branch master --single-branch --no-tags
-        cd go
-        export baseline=$(pwd)
-        echo "baseline=$baseline" >> $GITHUB_ENV
-        git log -1 --pretty=short
-
-    - name: Toolstash save
+    - name: Toolstash install
       run: |
         go env -w GO111MODULE=auto
         go install golang.org/x/tools/cmd/toolstash@latest
+
+    - name: Build go from tip
+      uses: iwdgo/gotip-build@master
+      id: gotip
+      with:
+        test_build: true
+# TODO Add architecture
+
+    - name: Baseline from tip
+      run: |
+        cd go
+        export baseline=$(pwd)
+        echo "baseline=$baseline" >> $GITHUB_ENV
+
+    - name: Toolstash save
+      run: |
+        # TODO Save the actual baseline
         toolstash -v save
 
     - name: Merge patch
       run: |
         git fetch https://go.googlesource.com/go refs/changes/96/136896/2 && git checkout -b change-136896 FETCH_HEAD
+        git format-patch -1
         if [ ! -f *.patch ]; then echo "No patch file found. Skipping."; exit 0; fi
         pwd
         mv *.patch ./go/src/
@@ -46,10 +56,10 @@ jobs:
     - name: Update compiler rules
       run: |
         cd go/src/cmd/compile/internal/ssa
-        go env -w GOTOOLCHAIN=local
+        go env -w GOTOOLCHAIN=path
         go generate
 
-    - name: Commit changes of compiler
+    - name: Commit changes to compiler
       run: |
         cd go
         export COMMITTITLE=$(basename -s .patch *.patch)
@@ -65,17 +75,18 @@ jobs:
         sh ./make.bash
 
     - name: Test
+      # Native testing
       run: |
         cd go/bin
         export GOROOT=
         go env -w GOROOT=
         go tool dist version
-        go tool dist test
+        # go tool dist test
 
     - name: Toolstash -cmp
       run: |
         cd go/src
-        go version
+        ./bin.go version
         export GOROOT=
         go env -w GO111MODULE=auto
         go tool dist version
