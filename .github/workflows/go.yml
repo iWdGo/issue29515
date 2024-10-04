@@ -68,7 +68,7 @@ jobs:
         git add -A
         # whoami | xargs -I {} git config user.name {}
         # whoami | xargs -I {} git config user.email {}@github.com
-        git commit -m $committitle
+        git commit -m `$committitle`
 
     - name: Build with updated rules
       run: |
