@@ -44,7 +44,7 @@ jobs:
         pwd
         ls
         go/bin/go version
-        go/bin/go GOROOT
+        go/bin/go env
         git clone --depth=1 --branch master --single-branch --no-tags https://cs.opensource.google/go/x/tools
         cd go/x/tools
         ../../bin/go test
