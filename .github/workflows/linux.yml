@@ -29,8 +29,8 @@ jobs:
     - name: Format patches
       run: |
         # Create patches and apply
-        # go.dev/issue/51269
-        git fetch https://go.googlesource.com/go refs/changes/35/627035/1 && git checkout -b change-627035 FETCH_HEAD
+        # go.dev/issue/30136
+        git fetch https://go.googlesource.com/go refs/changes/55/585055/3 && git checkout -b change-585055 FETCH_HEAD && git format-patch -1
 
     - name: Build go from tip
       uses: iwdgo/gotip-build@master
