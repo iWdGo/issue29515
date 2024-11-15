@@ -47,4 +47,4 @@ jobs:
         go/bin/go env
         git clone --depth=1 --branch master --single-branch --no-tags https://github.com/golang/tools.git
         cd tools/
-        ../bin/go test
+        ../go/bin/go test
