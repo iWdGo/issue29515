@@ -4,7 +4,6 @@ on:
     branches:
       - 'issue30136'
     paths:
-      - '0001-cmd-go-return-error-when-directory-has-no-go.mod-in-.patch'
       - '.github/workflows/linux.yml'
 
 jobs:
@@ -12,37 +11,39 @@ jobs:
   build:
     strategy:
       matrix:
-        go_arch: [amd64, arm64, ppc64le]
+        go_arch: [amd64]
       fail-fast: false
     name: Build
     runs-on: ubuntu-latest
     steps:
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: 1.22.x
       id: go
 
-    - name: Get patch files
+    - name: Access file system
       uses: actions/checkout@v4
+
+    - name: Format patches
+      run: |
+        # Create patches and apply
+        # go.dev/issue/51269
+        git fetch https://go.googlesource.com/go refs/changes/35/627035/1 && git checkout -b change-627035 FETCH_HEAD
 
     - name: Build go from tip
       uses: iwdgo/gotip-build@master
       id: gotip
       with:
-        go_variables: GO_TEST_SHORT=0 GO_TEST_TIMEOUT_SCALE=5 GOOS=linux GOARCH=${{ matrix.go_arch }}
+        go_variables: GO_TEST_SHORT=0 GO_TEST_TIMEOUT_SCALE=5
 
-    - name: Upload go executable
-      uses: actions/upload-artifact@v3
-      if: ${{ env.crosscompile == 'false' }}
-      with:
-        name: gotip-${{ env.goos }}-${{ env.goarch }}
-        path: go/bin/
-
-    - name: Upload go executable
-      uses: actions/upload-artifact@v3
-      if: ${{ env.crosscompile == 'true' }}
-      with:
-        name: gotip-${{ env.goos }}-${{ env.goarch }}
-        path: go/bin/${{ env.goos }}_${{ env.goarch }}
+    - name: Run 'go test golang.org/x/tools module'
+      run: |
+        pwd
+        ls
+        go/bin/go version
+        go/bin/go GOROOT
+        git clone --depth=1 --branch master --single-branch --no-tags https://cs.opensource.google/go/x/tools
+        cd go/x/tools
+        ../../bin/go test
