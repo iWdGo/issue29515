@@ -45,6 +45,6 @@ jobs:
         ls
         go/bin/go version
         go/bin/go env
-        git clone --depth=1 --branch master --single-branch --no-tags https://cs.opensource.google/go/x/tools
-        cd go/x/tools
-        ../../bin/go test
+        git clone --depth=1 --branch master --single-branch --no-tags https://github.com/golang/tools.git
+        cd tools/
+        ../bin/go test
