@@ -37,6 +37,7 @@ jobs:
       id: gotip
       with:
         go_variables: GO_TEST_SHORT=0 GO_TEST_TIMEOUT_SCALE=5
+        test_build: 'false'
 
     - name: Run 'go test golang.org/x/tools module'
       run: |
