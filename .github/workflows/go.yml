@@ -47,6 +47,7 @@ jobs:
           script: |
             gradle --version
             ls -l $ANDROID_AVD_HOME
+            ls -lr /usr/local/lib/android/sdk/system-images/android-29/default/x86/
             # gradle projects
 
       - name: Build go from tip
