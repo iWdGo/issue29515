@@ -46,7 +46,7 @@ jobs:
           api-level: 29
           script: |
             gradle --version
-            gradle projects
+            # gradle projects
 
       - name: Build go from tip
         uses: iwdgo/gotip-build@master
