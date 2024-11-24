@@ -46,12 +46,12 @@ jobs:
           api-level: 29
           script: |
             gradle --version
-            ls -l $NDK_ROOT/
+            ls -l $ANDROID_AVD_HOME
             # gradle projects
 
       - name: Build go from tip
         uses: iwdgo/gotip-build@master
         id: gotip
         with:
-          go_variables: GOOS=android GOARCH=arm64 CGO_ENABLED=1 CC=$NDK_ROOT/29.*/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android30-clang go build
+          go_variables: GOOS=android GOARCH=arm64 CGO_ENABLED=1 CC=$ANDROID_AVD_HOME/21.0.6113669/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android30-clang go build
           test_build: true
