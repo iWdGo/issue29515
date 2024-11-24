@@ -52,5 +52,5 @@ jobs:
         uses: iwdgo/gotip-build@master
         id: gotip
         with:
-          go_variables: GOOS=android GOARCH=amd64 CGO_ENABLED=1
+          go_variables: GOOS=android GOARCH=amd64 CGO_ENABLED=1 CC_FOR_TARGET=gcc
           test_build: true
