@@ -1,11 +1,8 @@
-name: go-on-tip
+name: image test
 on: [push]
 jobs:
 
   build:
-    strategy:
-      matrix:
-        go_arch: [386]
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -16,23 +13,7 @@ jobs:
         go-version: 1.22.x
       id: go
 
-    - name: Build go from tip
-      uses: iwdgo/gotip-build@master
-      id: gotip
-      with:
-        go_variables: GOOS=linux GOARCH=${{ matrix.go_arch }}
-        test_build: true
-
-    - name: Upload go executable
-      uses: actions/upload-artifact@v3
-      if: ${{ env.crosscompile == 'false' }}
-      with:
-        name: gotip-${{ env.goos }}-${{ env.goarch }}
-        path: go/bin/
-
-    - name: Upload go executable
-      uses: actions/upload-artifact@v3
-      if: ${{ env.crosscompile == 'true' }}
-      with:
-        name: gotip-${{ env.goos }}-${{ env.goarch }}
-        path: go/bin/${{ env.goos }}_${{ env.goarch }}
+    - name: Docker
+      run: |
+        /usr/bin/docker run -d -t --platform amd64 -e GOROOT=/tmp/go -e GO_TEST_TIMEOUT_SCALE=8 -e GOSUMDB=sum.golang.org --name xalpine chainguard/dragonfly
+        
