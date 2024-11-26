@@ -17,11 +17,11 @@ jobs:
     - uses: iwdgo/gotip-build@master
       id: gotip
       with:
-        go_variables: GOOS=dragonfly
+        go_variables: GOOS=freebsd
         test_build: 'false'
-    - name: Test in DragonflyBSD
+    - name: Test in FreeBSD
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/freebsd-vm@v1
       with:
         # envs: 'MYTOKEN MYTOKEN2'
         usesh: true
