@@ -39,7 +39,13 @@ jobs:
           fi
           pwd
           ls -lah
+          ls -lah go
           whoami
           env
           uname -a
           echo "OK"
+          # go test
+          cd go/src
+          ../bin/go version
+          ../bin/go env
+          ../bin/go tool dist test
