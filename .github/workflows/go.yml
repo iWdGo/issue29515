@@ -41,11 +41,11 @@ jobs:
           -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
           -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
           -device e1000,netdev=mynet0 \
-          -display curses \
-          # -graphics vnc,listen=0.0.0.0 \
-          -noautoconsole  \
-          -import  \
-          console=ttyS0 freebsd.qcow2 +1G
+          -nographic \
+          -vnc,listen=0.0.0.0 \
+          # -noautoconsole  \
+          # -import  \
+          freebsd.qcow2 +1G
         uname -a
         # Enter Freebsd
         ssh -p 7722 root@localhost
