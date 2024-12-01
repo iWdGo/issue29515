@@ -9,6 +9,7 @@ jobs:
 
     - name: Set up Go
       uses: actions/setup-go@v5
+      if: false
       with:
         go-version: 1.22.x
       id: go
@@ -16,37 +17,20 @@ jobs:
     - uses: actions/checkout@v4
     - uses: iwdgo/gotip-build@master
       id: gotip
+      if: false
       with:
         go_variables: GOOS=freebsd
         test_build: 'false'
     - name: Test in FreeBSD
-      id: test
-      uses: vmactions/freebsd-vm@v1
-      with:
-        # envs: 'MYTOKEN MYTOKEN2'
-        usesh: true
-        sync: rsync
-        copyback: false
-        prepare: |
-          pkg install -y socat
-
-        run: |
-          if [ -n "test" ]; then
-            echo "false"
-          fi
-          if [ "test" ]; then
-            echo "test"
-          fi
-          pwd
-          cat go/go.env
-          whoami
-          env
-          uname -a
-          echo "OK"
-          # go test
-          cd go/src
-          ../bin/freebsd_amd64/go version
-          ../bin/freebsd_amd64/go env
-          cp ../bin/freebsd_amd64/go ../bin/go
-          cp ../bin/freebsd_amd64/gofmt ../bin/gofmt
-          ../bin/go tool dist test
+      run: |
+        pkg install -y socat
+        https://download:freebsd:org/ftp/releases/VM-IMAGES/14:1-RELEASE/amd64/Latest/:
+        qemu-system-x86_64 -m 2048 \
+         -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
+         -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
+         -device e1000,netdev=mynet0
+        sshd_enable="YES"
+        ifconfig_em0="DHCP"
+        service netif restart
+        service sshd start
+        ssh -p 7722 root@localhost
