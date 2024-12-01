@@ -30,8 +30,6 @@ jobs:
     - name: Test in FreeBSD
       run: |
         sudo apt install qemu-system-x86
-        # Detect native virtio
-        virt-what
         # Download freebsd
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.1-RELEASE-amd64.qcow2.xz
