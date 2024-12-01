@@ -33,13 +33,17 @@ jobs:
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         sudo apt install qemu-system-x86
+        # Is virt-install available
+        virt-install -h
+        # Provision the image with some extension
+        qemu-img create -f qcow2 -F qcow2 -b FreeBSD-14.1-RELEASE-amd64.qcow2 freebsd.qcow2 +1G
         qemu-system-x86_64 -m 2048 \
-         -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
-         -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
-         -device e1000,netdev=mynet0 \
-         -display curses \
-         -nographic
-         -append 'console=ttyS0'
+          -machine freebsd.qcow2 -enable-kvm \
+          -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
+          -device e1000,netdev=mynet0 \
+          -display curses \
+          -graphics vnc,listen=0.0.0.0 \
+          -noautoconsole  --import
         uname -a
         # Enter Freebsd
         ssh -p 7722 root@localhost
