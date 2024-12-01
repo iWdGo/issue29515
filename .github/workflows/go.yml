@@ -39,7 +39,8 @@ jobs:
          -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
          -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
          -device e1000,netdev=mynet0 \
-         -nographic
+         -nographic \
+         -serial mon:stdio
         service netif restart
         service sshd start
         ssh -p 7722 root@localhost
