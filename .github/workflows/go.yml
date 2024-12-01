@@ -40,7 +40,7 @@ jobs:
          -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
          -device e1000,netdev=mynet0 \
          -display curses \
-         -serial mon:stdio
+         -nographic
         service netif restart
         service sshd start
         ssh -p 7722 root@localhost
