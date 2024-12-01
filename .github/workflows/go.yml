@@ -45,8 +45,7 @@ jobs:
           # -graphics vnc,listen=0.0.0.0 \
           -noautoconsole  \
           -import  \
-          freebsd.qcow2 \
-          +1G
+          console=ttyS0 freebsd.qcow2 +1G
         uname -a
         # Enter Freebsd
         ssh -p 7722 root@localhost
