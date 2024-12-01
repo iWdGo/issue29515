@@ -8,7 +8,7 @@ jobs:
     steps:
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: 1.22.x
       id: go
@@ -40,6 +40,9 @@ jobs:
           pwd
           ls -lah
           ls -lah go
+          ls -lah go/bin
+          ls -lah go/pkg
+          cat go/go.env
           whoami
           env
           uname -a
