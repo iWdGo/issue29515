@@ -42,9 +42,7 @@ jobs:
           -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
           -device e1000,netdev=mynet0 \
           -nographic \
-          -display vnc,listen=0.0.0.0 \
-          # -noautoconsole  \
-          # -import  \
+          -serial unix:console.sock,server,nowait
           freebsd.qcow2 +1G
         uname -a
         # Enter Freebsd
