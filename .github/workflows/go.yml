@@ -37,8 +37,8 @@ jobs:
          -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
          -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
          -device e1000,netdev=mynet0 \
-         --nographic \
-         --append 'console=ttyS0'
+         -nographic \
+         -append 'console=ttyS0'
         sshd_enable="YES"
         ifconfig_em0="DHCP"
         service netif restart
