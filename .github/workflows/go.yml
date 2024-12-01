@@ -17,11 +17,11 @@ jobs:
     - uses: iwdgo/gotip-build@master
       id: gotip
       with:
-        go_variables: GOOS=freebsd
+        go_variables: GOOS=netbsd
         test_build: 'false'
-    - name: Test in FreeBSD
+    - name: Test in netbsd
       id: test
-      uses: vmactions/freebsd-vm@v1
+      uses: vmactions/netbsd-vm@v1
       with:
         # envs: 'MYTOKEN MYTOKEN2'
         usesh: true
@@ -45,8 +45,8 @@ jobs:
           echo "OK"
           # go test
           cd go/src
-          ../bin/freebsd_amd64/go version
-          ../bin/freebsd_amd64/go env
-          cp ../bin/freebsd_amd64/go ../bin/go
-          cp ../bin/freebsd_amd64/gofmt ../bin/gofmt
+          ../bin/netbsd_amd64/go version
+          ../bin/netbsd_amd64/go env
+          cp ../bin/netbsd_amd64/go ../bin/go
+          cp ../bin/netbsd_amd64/gofmt ../bin/gofmt
           ../bin/go tool dist test
