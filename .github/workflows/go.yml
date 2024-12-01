@@ -51,4 +51,5 @@ jobs:
           cd go/src
           ../bin/freebsd_amd64/go version
           ../bin/freebsd_amd64/go env
+          cp ../bin/freebsd_amd64/* ../bin/*
           ../bin/freebsd_amd64/go tool dist test
