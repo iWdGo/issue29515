@@ -24,7 +24,7 @@ jobs:
     - name: Test in FreeBSD
       run: |
         # pkg install -y socat # freebsd package
-        https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
+        wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         qemu-system-x86_64 -m 2048 \
          -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
