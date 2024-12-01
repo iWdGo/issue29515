@@ -9,7 +9,7 @@ jobs:
 
     - name: Set up Go
       uses: actions/setup-go@v5
-      if: false
+      if: true
       with:
         go-version: 1.22.x
       id: go
@@ -23,7 +23,7 @@ jobs:
 
     - uses: iwdgo/gotip-build@master
       id: gotip
-      if: false
+      if: true
       with:
         go_variables: GOOS=freebsd
         test_build: 'false'
@@ -33,13 +33,16 @@ jobs:
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         sudo apt install qemu-system-x86
+        sshd_enable="YES"
+        ifconfig_em0="DHCP"
         qemu-system-x86_64 -m 2048 \
          -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
          -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
          -device e1000,netdev=mynet0 \
          -nographic
-        sshd_enable="YES"
-        ifconfig_em0="DHCP"
         service netif restart
         service sshd start
         ssh -p 7722 root@localhost
+        echo "Start complete"
+        ls -la
+        pwd
