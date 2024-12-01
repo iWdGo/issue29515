@@ -39,6 +39,7 @@ jobs:
          -device e1000,netdev=mynet0 \
          -display curses \
          -nographic
+         -append 'console=ttyS0'
         uname -a
         # Enter Freebsd
         ssh -p 7722 root@localhost
