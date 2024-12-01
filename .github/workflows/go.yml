@@ -49,6 +49,6 @@ jobs:
           echo "OK"
           # go test
           cd go/src
-          ../bin/go version
-          ../bin/go env
-          ../bin/go tool dist test
+          ../bin/freebsd_amd64/go version
+          ../bin/freebsd_amd64/go env
+          ../bin/freebsd_amd64/go tool dist test
