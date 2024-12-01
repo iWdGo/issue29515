@@ -26,6 +26,7 @@ jobs:
         # pkg install -y socat # freebsd package
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.1-RELEASE-amd64.qcow2.xz
+        apt install qemu-system-x86
         qemu-system-x86_64 -m 2048 \
          -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
          -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
