@@ -42,7 +42,7 @@ jobs:
           -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
           -device e1000,netdev=mynet0 \
           -nographic \
-          -graphics vnc,listen=0.0.0.0 \
+          -display vnc,listen=0.0.0.0 \
           # -noautoconsole  \
           # -import  \
           freebsd.qcow2 +1G
