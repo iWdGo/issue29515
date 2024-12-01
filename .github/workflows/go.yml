@@ -7,45 +7,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: 1.22.x
-      id: go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22.x
+        id: go
 
-    - uses: actions/checkout@v4
-    - uses: iwdgo/gotip-build@master
-      id: gotip
-      with:
-        go_variables: GOOS=dragonfly
-        test_build: 'false'
-    - name: Test in DragonflyBSD
-      id: test
-      uses: vmactions/dragonflybsd-vm@v1
-      with:
-        # envs: 'MYTOKEN MYTOKEN2'
-        usesh: true
-        sync: rsync
-        copyback: false
-        prepare: |
-          pkg install -y socat
-
-        run: |
-          if [ -n "test" ]; then
-            echo "false"
-          fi
-          if [ "test" ]; then
-            echo "test"
-          fi
-          pwd
-          ls -lah
-          ls -lah go
-          whoami
-          env
-          uname -a
-          echo "OK"
-          # go test
-          cd go/src
-          ../bin/go version
-          ../bin/go env
-          ../bin/go tool dist test
+      - uses: actions/checkout@v4
+      - uses: iwdgo/gotip-build@master
+        id: gotip
+        with:
+          go_variables: GOOS=dragonfly
+          test_build: 'false'
+      - name: Test in dragonfly
+        id: test
+        uses: vmactions/dragonflybsd-vm@v1
+        with:
+          # envs: 'MYTOKEN MYTOKEN2'
+          usesh: true
+          sync: rsync
+          copyback: false
+          prepare: |
+            pkg install -y socat
+          
+          run: |
+            if [ -n "test" ]; then
+              echo "false"
+            fi
+            if [ "test" ]; then
+              echo "test"
+            fi
+            pwd
+            cat go/go.env
+            whoami
+            env
+            uname -a
+            echo "OK"
+            # go test
+            cd go/src
+            ../bin/dragonfly_amd64/go version
+            ../bin/dragonfly_amd64/go env
+            cp ../bin/dragonfly_amd64/go ../bin/go
+            cp ../bin/dragonfly_amd64/gofmt ../bin/gofmt
+            ../bin/go tool dist test
