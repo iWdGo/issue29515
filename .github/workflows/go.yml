@@ -39,8 +39,6 @@ jobs:
         # Start
         qemu-img resize FreeBSD-14.1-RELEASE-amd64.qcow2 +2G
         sudo systemctl enable serial-getty@ttyS0.service
-        sysrc sshd_enable="YES" ifconfig_em0="DHCP"
-        sed -i '$a PermitRootLogin prohibit-password" /etc/ssh/sshd.conf
         # sudo sshd -T
         # sudo ssh -G localhost
         sudo ssh -tt
@@ -58,6 +56,8 @@ jobs:
         ssh -p 7722 root@localhost
         uname -a
         pkg install -y socat # freebsd package
+        sysrc sshd_enable="YES" ifconfig_em0="DHCP"
+        sed -i '$a PermitRootLogin prohibit-password" /etc/ssh/sshd.conf
         service netif restart
         service sshd start
         ls -la
