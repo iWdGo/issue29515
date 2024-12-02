@@ -29,7 +29,7 @@ jobs:
         test_build: 'false'
     - name: Test in FreeBSD
       run: |
-        sudo apt install qemu-system-x86
+        sudo apt install qemu-system-x86 virt-manager
         # Download freebsd
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.1-RELEASE-amd64.qcow2.xz
@@ -37,7 +37,9 @@ jobs:
         # qemu-img create -f qcow2 -F qcow2 -b FreeBSD-14.1-RELEASE-amd64.qcow2 freebsd.qcow2 +1G
         # ps -ef | grep qemu-system-x86_64
         # Start
-        systemctl enable serial-getty@ttyS0.service
+        qemu-img resize FreeBSD-14.1-RELEASE-amd64.qcow2 +2G
+        sudo systemctl enable serial-getty@ttyS0.service
+        ls "$HOME/.ssh"
         qemu-system-x86_64 -m 2048 \
           -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
           -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
