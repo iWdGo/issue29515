@@ -39,7 +39,10 @@ jobs:
         # Start
         qemu-img resize FreeBSD-14.1-RELEASE-amd64.qcow2 +2G
         sudo systemctl enable serial-getty@ttyS0.service
-        ls "$HOME/.ssh"
+        # sysrc sshd_enable="YES" ifconfig_em0="DHCP"
+        # sed -i '$a PermitRootLogin prohibit-password" /etc/ssh/sshd.conf
+        sshd -T
+        ssh -G localhost
         qemu-system-x86_64 -m 2048 \
           -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
           -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
@@ -53,8 +56,6 @@ jobs:
         # Enter Freebsd
         ssh -p 7722 root@localhost
         uname -a
-        sysrc sshd_enable="YES" ifconfig_em0="DHCP"
-        sed -i '$a PermitRootLogin prohibit-password" /etc/ssh/sshd.conf
         pkg install -y socat # freebsd package
         service netif restart
         service sshd start
