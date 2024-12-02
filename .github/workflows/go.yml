@@ -41,7 +41,7 @@ jobs:
         sudo systemctl enable serial-getty@ttyS0.service
         # sudo sshd -T
         # sudo ssh -G localhost
-        sudo ssh -tt
+        sudo ssh -t -t
         qemu-system-x86_64 -m 2048 \
           -hda FreeBSD-14.1-RELEASE-amd64.qcow2 -enable-kvm \
           -netdev user,id=mynet0,hostfwd=tcp:127.0.0.1:7722-:22 \
