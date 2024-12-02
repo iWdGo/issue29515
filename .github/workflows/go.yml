@@ -28,7 +28,7 @@ jobs:
         sync: rsync
         copyback: false
         prepare: |
-          pkgin install -y socat
+          # pkgin install -y socat
 
         run: |
           if [ -n "test" ]; then
