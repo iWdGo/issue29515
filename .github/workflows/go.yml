@@ -37,7 +37,7 @@ jobs:
         # qemu-img create -f qcow2 -F qcow2 -b FreeBSD-14.1-RELEASE-amd64.qcow2 freebsd.qcow2 +1G
         # ps -ef | grep qemu-system-x86_64
         # Start
-        qemu-img resize FreeBSD-14.1-RELEASE-amd64.qcow2 +2G
+        # qemu-img resize FreeBSD-14.1-RELEASE-amd64.qcow2 +2G
         # sudo systemctl enable serial-getty@ttyS0.service
         uname -a
         # sudo sshd -T
@@ -51,7 +51,16 @@ jobs:
         #   console=ttyS0,38400n8 earlyprint=serial,ttyS0,38400n8 \
         #   freebsd.qcow2 +1G
         # Trying defaults
-        qemu-system-x86_64 -drive file=FreeBSD-14.1-RELEASE-amd64.qcow2,format=qcow2 -nographic
+        virt-install --name freebsd141 --memory 2048 \
+          --disk FreeBSD-14.1-RELEASE-amd64.qcow2,format=qcow2 \
+          --network network=default,model=e1000 \
+          --graphics vnc,listen=0.0.0.0 \
+          --noautoconsole  --import  --check all=off
+        virsh start freebsd141
+        virsh list --all
+        
+        # qemu-system-x86_64 -drive file=FreeBSD-14.1-RELEASE-amd64.qcow2,format=qcow2 -nographic \
+        #  freebsd +1G
         socat STDIO,cfmakeraw UNIX:console.sock
         # Enter Freebsd
         ssh -p 7722 root@localhost
