@@ -51,8 +51,11 @@ jobs:
         #   console=ttyS0,38400n8 earlyprint=serial,ttyS0,38400n8 \
         #   freebsd.qcow2 +1G
         # Trying defaults
+        virt-install --osvariant list
+        virt-install --osinfo list
         virt-install --name freebsd141 --memory 2048 \
           --disk FreeBSD-14.1-RELEASE-amd64.qcow2,format=qcow2 \
+          --osinfo freebsd
           --network network=default,model=e1000 \
           --graphics vnc,listen=0.0.0.0 \
           --noautoconsole  --import  --check all=off
