@@ -53,7 +53,7 @@ jobs:
         #   freebsd.qcow2 +1G
         # Trying defaults
         virt-install --name freebsd140 --memory 2048 \
-          --disk FreeBSD-14.0-RELEASE-amd64.qcow2,format=qcow2 \
+          --file FreeBSD-14.0-RELEASE-amd64.qcow2,format=qcow2 \
           --osinfo freebsd14.0
           --network network=default,model=e1000 \
           --graphics vnc,listen=0.0.0.0 \
