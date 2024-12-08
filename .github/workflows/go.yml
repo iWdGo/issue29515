@@ -52,8 +52,10 @@ jobs:
         #   console=ttyS0,38400n8 earlyprint=serial,ttyS0,38400n8 \
         #   freebsd.qcow2 +1G
         # Trying defaults
+        qemu-img create -f qcow2 -o preallocation=off FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
+        # bus=...:virtio ?
         virt-install --name freebsd140 --memory 2048 \
-          --file FreeBSD-14.0-RELEASE-amd64.qcow2,format=qcow2 \
+          --disk path=FreeBSD-14.0-RELEASE-amd64.qcow2,format=qcow2 \
           --osinfo freebsd14.0
           --network network=default,model=e1000 \
           --graphics vnc,listen=0.0.0.0 \
