@@ -54,7 +54,7 @@ jobs:
         # Trying defaults
         # qemu-img create -f qcow2 -o preallocation=off FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
         # bus=...:virtio ?
-        virt-install --connect qemu:///system \
+        sudo virt-install --connect qemu:///system \
           --name freebsd140 \
           --memory 2048 \
           --osinfo freebsd14.0 \
