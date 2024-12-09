@@ -59,9 +59,10 @@ jobs:
           --osinfo freebsd14.0
           --network network=default,model=e1000,model=virtio \
           --graphics vnc,listen=0.0.0.0 \
-          --virt-typ qemu
-          --location 'FreeBSD-14.0-RELEASE-amd64.qcow2'
-          --noautoconsole  --import  --check all=off
+          --virt-typ qemu \
+          --location 'FreeBSD-14.0-RELEASE-amd64.qcow2' \
+          --noautoconsole  --import  --checkall=off \
+          freebsd140
         virsh start freebsd140
         virsh list --all
         
