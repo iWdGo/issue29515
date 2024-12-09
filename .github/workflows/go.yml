@@ -34,7 +34,7 @@ jobs:
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.0-RELEASE/amd64/Latest/FreeBSD-14.0-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.0-RELEASE-amd64.qcow2.xz
         # Provision the image
-        # qemu-img create -f qcow2 -F qcow2 -b FreeBSD-14.0-RELEASE-amd64.qcow2 freebsd.qcow2 +1G
+        qemu-img create -f qcow2 -F qcow2 -b FreeBSD-14.0-RELEASE-amd64.qcow2 freebsd140 +2G
         # ps -ef | grep qemu-system-x86_64
         # Start
         # qemu-img resize FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
@@ -54,12 +54,14 @@ jobs:
         # Trying defaults
         # qemu-img create -f qcow2 -o preallocation=off FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
         # bus=...:virtio ?
-        virt-install --name freebsd140 --memory 2048 \
-          --disk path='FreeBSD-14.0-RELEASE-amd64.qcow2',format=qcow2 \
-          --osinfo freebsd14.0
+        virt-install --connect qemu:///system \
+          --name freebsd140 \
+          --memory 2048 \
+          --osinfo freebsd14.0 \
           --network network=default,model=e1000,model=virtio \
           --graphics vnc,listen=0.0.0.0 \
           --virt-typ qemu \
+          --disk FreeBSD-14.0-RELEASE-amd64.qcow2 \
           --import \
           --noautoconsole  
         virsh start freebsd140
