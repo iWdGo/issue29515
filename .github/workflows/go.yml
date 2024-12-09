@@ -30,13 +30,15 @@ jobs:
     - name: Test in FreeBSD
       run: |
         sudo apt install qemu-system-x86 virt-manager
-        sudo chmod u+rwx libvirt-qemu ./
+        # sudo chmod u+rwx libvirt-qemu ./
         # Download freebsd
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.0-RELEASE/amd64/Latest/FreeBSD-14.0-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.0-RELEASE-amd64.qcow2.xz
-        mv FreeBSD-14.0-RELEASE-amd64.qcow2.xz /runner/home/var/lib/libvirt/images/
+        virsh pool-dumpxml default
+        ls -l /var/lib/libvirt/
+        sudo mv FreeBSD-14.0-RELEASE-amd64.qcow2.xz /var/lib/libvirt/images/
         # Provision the image
-        qemu-img create -f qcow2 -F qcow2 -b FreeBSD-14.0-RELEASE-amd64.qcow2 freebsd140 +2G
+        qemu-img resize /var/lib/libvirt/images/FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
         # ps -ef | grep qemu-system-x86_64
         # Start
         # qemu-img resize FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
@@ -63,7 +65,7 @@ jobs:
           --network network=default,model=e1000,model=virtio \
           --graphics vnc,listen=0.0.0.0 \
           --virt-typ qemu \
-          --disk FreeBSD-14.0-RELEASE-amd64.qcow2 \
+          --disk /var/lib/libvirt/images/FreeBSD-14.0-RELEASE-amd64.qcow2 \
           --import \
           --noautoconsole  
         virsh start freebsd140
