@@ -36,7 +36,7 @@ jobs:
         xz --decompress FreeBSD-14.0-RELEASE-amd64.qcow2.xz
         virsh pool-list
         ls -l /var/lib/libvirt/
-        sudo mv FreeBSD-14.0-RELEASE-amd64.qcow2.xz /var/lib/libvirt/images/
+        sudo mv FreeBSD-14.0-RELEASE-amd64.qcow2 /var/lib/libvirt/images/
         # Provision the image
         qemu-img resize /var/lib/libvirt/images/FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
         # ps -ef | grep qemu-system-x86_64
