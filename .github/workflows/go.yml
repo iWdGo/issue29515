@@ -70,18 +70,17 @@ jobs:
           --import
         sleep 30s
         # virsh start freebsd140
-        virsh list --all
-        
+        # virsh list --all
         # qemu-system-x86_64 -drive file=FreeBSD-14.0-RELEASE-amd64.qcow2,format=qcow2 -nographic \
         #  freebsd +1G
         # socat STDIO,cfmakeraw UNIX:console.sock
         # Enter Freebsd
-        ssh -p 7722 root@localhost
+        # ssh -p 7722 root@localhost
         uname -a
-        pkg install -y socat # freebsd package
-        sysrc sshd_enable="YES" ifconfig_em0="DHCP"
-        sed -i '$a PermitRootLogin prohibit-password" /etc/ssh/sshd.conf
-        service netif restart
-        service sshd start
+        # pkg install -y socat # freebsd package
+        # sysrc sshd_enable="YES" ifconfig_em0="DHCP"
+        # sed -i '$a PermitRootLogin prohibit-password" /etc/ssh/sshd.conf
+        # service netif restart
+        # service sshd start
         ls -la
         pwd
