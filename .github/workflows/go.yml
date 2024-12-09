@@ -34,7 +34,7 @@ jobs:
         # Download freebsd
         wget https://download.freebsd.org/ftp/releases/VM-IMAGES/14.0-RELEASE/amd64/Latest/FreeBSD-14.0-RELEASE-amd64.qcow2.xz
         xz --decompress FreeBSD-14.0-RELEASE-amd64.qcow2.xz
-        virsh pool-dumpxml
+        virsh pool-list
         ls -l /var/lib/libvirt/
         sudo mv FreeBSD-14.0-RELEASE-amd64.qcow2.xz /var/lib/libvirt/images/
         # Provision the image
