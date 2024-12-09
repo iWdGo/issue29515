@@ -55,11 +55,12 @@ jobs:
         # qemu-img create -f qcow2 -o preallocation=off FreeBSD-14.0-RELEASE-amd64.qcow2 +2G
         # bus=...:virtio ?
         virt-install --name freebsd140 --memory 2048 \
-          --file FreeBSD-14.0-RELEASE-amd64.qcow2,format=qcow2 \
+          --disk path='FreeBSD-14.0-RELEASE-amd64.qcow2',format=qcow2 \
           --osinfo freebsd14.0
-          --network network=default,model=e1000 \
+          --network network=default,model=e1000,model=virtio \
           --graphics vnc,listen=0.0.0.0 \
           --virt-typ qemu
+          --location 'FreeBSD-14.0-RELEASE-amd64.qcow2'
           --noautoconsole  --import  --check all=off
         virsh start freebsd140
         virsh list --all
